@@ -1,0 +1,77 @@
+{% load static %}
+
+<aside x-bind:class="{ 'w-fit origin-left': !mainMenu2.isExpanded, 'w-72': mainMenu2.isExpanded }"
+    class="sticky transition-all duration-500 bg-white border-r-2 hidden sm:block">
+    <button x-on:click="mainMenu2.isExpanded = !mainMenu2.isExpanded, mainMenu.isExpanded = false"
+        class="absolute p-1.5 rounded-full bg-white border-2 top-5 -right-5 z-50">
+        <img x-show="mainMenu2.isExpanded" src="{% static './layouts/sidebar2/sidebar-open.svg' %}" alt="icon"
+            loading="lazy">
+        <img x-show="!mainMenu2.isExpanded" src="{% static './layouts/sidebar2/sidebar-close.svg' %}" alt="icon"
+            loading="lazy">
+    </button>
+    <div class="overflow-y-auto h-screen">
+        <div class="grid py-4 px-4 gap-5 ">
+            <div class="flex items-center gap-2 pl-3 ">
+                <img src="{% static './binus.png' %}" width="85px" height="145px" alt="Logo">
+                <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}" class="text-base font-medium">MONITORING ORTU BINUS</h1>
+            </div>
+
+            {% url 'dashboard' as url %}
+            <div class="grid">
+                <a href="{{url}}"
+                    x-bind:class="{'justify-center p-2': !mainMenu2.isExpanded, 'py-3 pl-3': mainMenu2.isExpanded }"
+                    class="flex items-center gap-2 py-3 pl-3 {% if request.path == url %}bg-primaryColor rounded-lg {% endif %}">
+                    <i style="font-size: 19px;"
+                        class="mt-0 fi fi-rr-home {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %}"></i>
+                    <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}"
+                        class="text-sm font-normal {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %} font-inter">
+                        Dashboard</h1>
+                </a>
+            </div>
+            <hr x-show="!mainMenu2.isExpanded" class="border- border-bottom" />
+
+            <div class="grid gap-2">
+                <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}"
+                class="text-sm font-medium text-black font-inter">Data</h1>
+                
+                {% url 'anak' as url %}
+                <a href="{{url}}"
+                    x-bind:class="{'justify-center p-2': !mainMenu2.isExpanded, 'py-3 pl-3': mainMenu2.isExpanded }"
+                    class="flex items-center gap-2 py-3 pl-3 {% if request.path == url %}bg-primaryColor rounded-lg {% endif %}">
+                    <i style="font-size: 19px;"
+                    class="fi fi-rr-file-upload {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %}"></i>
+                    <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}"
+                    class="text-sm font-normal {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %} font-inter">
+                    Siswa</h1>
+                </a>
+            
+                
+                {% url 'nilai_akademik' as url %}
+                <a href="{{url}}"
+                    x-bind:class="{'justify-center p-2': !mainMenu2.isExpanded, 'py-3 pl-3': mainMenu2.isExpanded }"
+                    class="flex items-center gap-2 py-3 pl-3 {% if request.path == url %}bg-primaryColor rounded-lg {% endif %}">
+                    <i style="font-size: 19px;"
+                        class="fi fi-rr-file-upload {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %}"></i>
+                    <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}"
+                        class="text-sm font-normal {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %} font-inter">
+                        Nilai Akademik Siswa</h1>
+                </a>
+
+                <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}"
+                class="text-sm font-medium text-black font-inter">Keuangan</h1>
+                {% url 'pembayaran' as url %}
+                <a href="{{url}}"
+                    x-bind:class="{'justify-center p-2': !mainMenu2.isExpanded, 'py-3 pl-3': mainMenu2.isExpanded }"
+                    class="flex items-center gap-2 py-3 pl-3 {% if request.path == url %}bg-primaryColor rounded-lg {% endif %}">
+                    <i style="font-size: 19px;"
+                        class="fi fi-rr-file-upload {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %}"></i>
+                    <h1 x-bind:class="{'origin-left hidden': !mainMenu2.isExpanded}"
+                        class="text-sm font-normal {% if request.path == url %} text-white {% else %} text-gray-500 {% endif %} font-inter">
+                        Pembayaran</h1>
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+</aside>

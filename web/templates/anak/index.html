@@ -1,0 +1,163 @@
+{% extends "partials/base.html" %}
+{% load general_function %}
+{% block title %}
+Data Anak
+{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="container">
+        
+
+        <div class="flex justify-between">
+            <h1 class="text-base font-semibold border-l-4 pl-2.5 border-primaryColor">
+                Daftar Siswa
+            </h1>
+            <form class="w-full" method="GET">   
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Pencarian</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="search" name="search" id="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari Pengajuan..." />
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pencarian</button>
+                </div>
+            </form>
+        </div>
+        <br>
+        {% if request.session.roles == "ORTU" %}
+            <div class="flex justify-end">
+                <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" id="openDialog">
+                    Tambah Data
+                </button>
+            </div>
+        {% endif %}
+        <hr x-show="!mainMenu2.isExpanded" class="border- border-bottom" />
+
+        <!-- Grid Layout -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            {% for x in data %}
+            <div class="flex bg-white shadow-lg rounded-lg overflow-hidden">
+                <!-- Foto Murid -->
+                <div class="w-32 h-full flex-shrink-0">
+                    {% if x.foto %}
+                    <img src="{{ x.foto }}" alt="Foto {{ x.name }}" class="w-full h-full object-cover">
+                    {% else %}
+                    <img src="https://via.placeholder.com/150" alt="Placeholder" class="w-full h-full object-cover">
+                    {% endif %}
+                </div>
+
+                <!-- Informasi Murid -->
+                <div class="p-4 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">{{ x.name }}</h2>
+                        <p class="text-gray-600"><strong>Jenis Kelamin:</strong> {{ x.jenis_kelamin }}</p>
+                        <p class="text-gray-600"><strong>Tanggal Lahir:</strong> {{ x.tanggal_lahir }}</p>
+                        <p class="text-gray-600"><strong>Kelas:</strong> {{ x.kelas }}</p>
+                        <p class="text-gray-600"><strong>Nilai Rata-rata:</strong> {{ x.nilai_rata }}</p>
+                        {% if request.session.roles == "GURU" %}
+                            <p class="text-gray-600"><strong>Wali:</strong> {{ x.ortu.name.upper }}</p>
+                        {% endif %}
+                        <p class="text-gray-600">
+                            <strong>Status:</strong> 
+                            <span class="font-medium {% if x.status %}text-green-600{% else %}text-red-600{% endif %}">
+                                {{ x.status|yesno:"Aktif,Nonaktif" }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% include 'partials/pagination.html' %}
+        
+    </div>
+
+    <dialog id="tambahanak" class="modal-middle relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow">
+        <div class="relative">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900">
+                    Tambah Data Siswa
+                </h3>
+                <button type="button" onclick="tambahanak.close()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="default-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <form method="post" enctype="multipart/form-data" action="" id="muridForm">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Murid:</label>
+                    <input type="text" id="name" name="name" required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-200">
+                </div>
+    
+                <div class="mb-4">
+                    <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin:</label>
+                    <select id="jenis_kelamin" name="jenis_kelamin" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-200">
+                        <option value="Laki-Laki">Laki-Laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+    
+                <div class="mb-4">
+                    <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir:</label>
+                    <input type="date" id="tanggal_lahir" name="tanggal_lahir" required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-200">
+                </div>
+    
+                <div class="mb-4">
+                    <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas:</label>
+                    <input type="number" id="kelas" name="kelas" required 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-200">
+                </div>
+    
+                <div class="mb-4">
+                    <label for="foto" class="block text-sm font-medium text-gray-700">Foto Murid:</label>
+                    <input type="file" id="foto" name="foto" 
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-gray-500 focus:ring focus:ring-gray-200">
+                </div>
+    
+                <menu class="flex justify-end">
+                    <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800">Kirim</button>
+                </menu>
+            </form>
+        </div>
+    </dialog>
+
+    
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('search').value = urlParams.get('search')
+
+    const dialog = document.getElementById("tambahanak");
+    const openButton = document.getElementById("openDialog");
+    const closeButton = document.getElementById("closeDialog");
+
+    // Open the dialog
+    openButton.onclick = function() {
+        dialog.showModal();
+    }
+
+    // Close the dialog
+    closeButton.onclick = function() {
+        dialog.close();
+    }
+
+    
+</script>
+{% endblock javascripts %}

@@ -1,0 +1,84 @@
+{% extends "partials/base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto mt-5">
+    <h1 class="text-2xl font-semibold mb-5">Grafik Prestasi Siswa</h1>
+
+    <!-- Chart Pertama: Rata-rata per Mapel -->
+    <h2 class="text-xl font-semibold mt-3 mb-2">Grafik Rata-rata Nilai per Mapel</h2>
+    <div id="chartMapel" style="width: 100%; height: 400px;"></div>
+
+    <!-- Chart Kedua: Rata-rata per Siswa -->
+    <h2 class="text-xl font-semibold mt-8 mb-2">Grafik Rata-rata Nilai per Siswa</h2>
+    <div id="chartSiswa" style="width: 100%; height: 400px;"></div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script>
+    $(document).ready(function () {
+        // Chart Pertama: Rata-rata Nilai per Mapel
+        $.ajax({
+            url: "{% url 'prestasi_chart_data' %}",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                Highcharts.chart('chartMapel', {
+                    chart: { type: 'column' },
+                    title: { text: 'Rata-rata Nilai per Mapel' },
+                    xAxis: {
+                        categories: data.labels,
+                        title: { text: 'Mata Pelajaran' }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: { text: 'Nilai Rata-rata' }
+                    },
+                    series: [{
+                        name: 'Nilai Rata-rata',
+                        data: data.averages
+                    }]
+                });
+            },
+            error: function () {
+                alert("Gagal memuat data chart pertama!");
+            }
+        });
+
+        // Chart Kedua: Rata-rata Nilai per Siswa (Bar Horizontal)
+        $.ajax({
+            url: "{% url 'chart_siswa_data' %}",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                Highcharts.chart('chartSiswa', {
+                    chart: { type: 'bar' },
+                    title: { text: 'Rata-rata Nilai per Siswa' },
+                    xAxis: {
+                        categories: data.names,
+                        title: { text: 'Nama Siswa' }
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: { text: 'Nilai Rata-rata' }
+                    },
+                    series: [{
+                        name: 'Nilai Rata-rata',
+                        data: data.averages
+                    }]
+                });
+            },
+            error: function () {
+                alert("Gagal memuat data chart kedua!");
+            }
+        });
+    });
+</script>
+{% endblock javascripts %}

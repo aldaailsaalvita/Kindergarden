@@ -1,0 +1,31 @@
+NAMA KELOMPOK 5:
+
+-  ALDA AILSA ALVITA 			221011401324
+-  DIMAS INDRA PRATAMA 		22101140 3152
+-  DEKA AGUSTIAR 			221011401996
+
+
+Berikut adalah panduan untuk menginstal dan menjalankan aplikasi Python dengan langkah-langkah yang disampaikan:
+
+
+
+Panduan Instalasi dan Menjalankan Aplikasi Python
+
+1. Buka Command Prompt (CMD) di Folder Proyek  
+   Pastikan berada di direktori proyek yang sesuai. Bisa melakukannya dengan membuka Command Prompt, lalu navigasikan ke folder proyek menggunakan perintah berikut:  
+   
+   cd path/to/folder/proyek
+   
+
+2. Menginstal Dependensi 
+   Jalankan perintah berikut untuk menginstal semua dependensi yang dibutuhkan oleh aplikasi. Pastikan file `requirements.txt` ada di direktori proyek.  
+   
+   pip install -r requirements.txt
+   
+
+3. Menjalankan Aplikasi 
+   Setelah semua dependensi terinstal, jalankan server aplikasi menggunakan perintah:  
+  
+   py manage.py runserver
+
+Selesai sekarang program sudah bisa dijalankan 😊.

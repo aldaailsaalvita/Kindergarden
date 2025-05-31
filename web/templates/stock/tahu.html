@@ -1,0 +1,185 @@
+{% extends "partials/base.html" %}
+{% load general_function %}
+{% block title %}
+Stock Tahu
+{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="container">
+        <div class="flex justify-between">
+            <h1 class="font-bold">Stock Tahu</h1>
+
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" id="openDialog">
+                Tambah
+            </button>
+        </div>
+
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" align="center" rowspan="3" class="px-6 py-3">
+                            NO
+                        </th>
+                        <th scope="col" align="center" rowspan="3" class="px-6 py-3">
+                            HARI/TANGGAL
+                        </th>
+                        <th scope="col" align="center" colspan="8" class="px-6 py-3">
+                            JENIS BARANG TAHU
+                        </th>
+                        <th scope="col" align="center" rowspan="3" class="px-6 py-3">
+                            KET
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" align="center" rowspan="2" class="px-6 py-3">
+                            Pesanan
+                        </th>
+                        <th scope="col" align="center" rowspan="2" class="px-6 py-3">
+                            Masuk
+                        </th>
+                        <th scope="col" align="center" rowspan="2" class="px-6 py-3">
+                            Stock Barang
+                        </th>
+                        <th scope="col" align="center" rowspan="2" class="px-6 py-3">
+                            Barang Keluar Jualan
+                        </th>
+                        <th scope="col" align="center" rowspan="2" class="px-6 py-3">
+                            Sisa Gudang
+                        </th>
+                        <th scope="col" align="center" colspan="2" class="px-6 py-3">
+                            Jual
+                        </th>
+                        <th scope="col" align="center" rowspan="2" class="px-6 py-3">
+                            Sisa Akhir
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" align="center" class="px-6 py-3">
+                            Terjual
+                        </th>
+                        <th scope="col" align="center" class="px-6 py-3">
+                            Sisa
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in object_list %}
+                        <tr class="border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                {{ forloop.counter }}
+                            </th>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {{ x.date|convert_date }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.pesanan|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.masuk|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.stock|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.barang_keluar|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.sisa_gudang|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.terjual|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.sisa|format_angka }}
+                            </td>
+                            <td class="px-6 py-4" align="right">
+                                {{x.sisa_akhir|format_angka }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{x.keterangan}}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <dialog id="tahuDialog" class="modal">
+            <div class="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Tambah Rekap Tahu</h2>
+                    <button id="closeDialog" class="text-3xl text-gray-600 hover:text-gray-900 focus:outline-none">&times;</button>
+                </div>
+                
+                <form method="post" action="{% url 'add_rekap' %}" id="tahuForm">
+                    {% csrf_token %}
+                    
+                    <input type="hidden" value="1" id="jenis_barang" name="jenis_barang" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    <div class="mb-4">
+                        <label for="date" class="block text-sm font-medium text-gray-700">Tanggal:</label>
+                        <input type="date" id="date" name="date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="pesanan" class="block text-sm font-medium text-gray-700">Pesanan:</label>
+                        <input type="number" value="0" id="pesanan" name="pesanan" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+                
+                    <div class="mb-4">
+                        <label for="masuk" class="block text-sm font-medium text-gray-700">Masuk:</label>
+                        <input type="number" value="0" id="masuk" name="masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+                
+                    <div class="mb-4">
+                        <label for="barang_keluar" class="block text-sm font-medium text-gray-700">Barang Keluar:</label>
+                        <input type="number" value="0" id="barang_keluar" name="barang_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+                
+                    <div class="mb-4">
+                        <label for="sisa" class="block text-sm font-medium text-gray-700">Sisa:</label>
+                        <input type="number" value="0" id="sisa" name="sisa" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+                
+                    <div class="mb-4">
+                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan:</label>
+                        <textarea id="keterangan" name="keterangan" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;"></textarea>
+                    </div>
+                
+                    <menu class="flex justify-end">
+                        <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800">Kirim</button>
+                    </menu>
+                </form>
+            </div>
+        </dialog>
+        
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("date").value = today;
+
+    const dialog = document.getElementById("tahuDialog");
+    const openButton = document.getElementById("openDialog");
+    const closeButton = document.getElementById("closeDialog");
+
+    // Open the dialog
+    openButton.onclick = function() {
+        dialog.showModal();
+    }
+
+    // Close the dialog
+    closeButton.onclick = function() {
+        dialog.close();
+    }
+
+    
+</script>
+{% endblock javascripts %}

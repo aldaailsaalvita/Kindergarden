@@ -1,0 +1,90 @@
+{% load static %}
+
+<div class="w-full border-t border-[#E2E8F0] pt-3 flex justify-between items-center">
+    {% if data %}
+        <div class="flex items-center gap-2">
+            <h3 class="text-base font-medium leading-4">Data Ditampilkan</h3>
+            <select name="limit" id="limit" class="p-2 mt-1 border rounded-lg">
+                <option value="10" {% if limit == '10' %} selected {% endif %}>10</option>
+                <option value="25" {% if limit == '25' %} selected {% endif %}>25</option>
+                <option value="50" {% if limit == '50' %} selected {% endif %}>50</option>
+                <option value="100" {% if limit == '100' %} selected {% endif %}>100</option>
+            </select>
+            <input type="hidden" value="1" name="page">
+        </div>
+    {% endif %}
+    <div class="flex flex-wrap items-center justify-center">
+        <nav class="flex space-x-2" aria-label="Pagination">
+            {% if data.has_previous %}
+                <a href="?page={{ data.previous_page_number }}&limit={{ limit }}{{ params }}"
+                    class="relative inline-flex items-center px-4 py-2 text-sm bg-[#EFF6FF] hover:bg-[#3B82F6] text-[#3B82F6] hover:text-white font-semibold cursor-pointer leading-5 rounded-lg transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+                    Sebelumnya
+                </a>
+            {% endif %}
+
+            {% if data.number|add:'-4' > 1 %}
+                <a class="relative inline-flex items-center px-4 py-2 text-sm bg-[#F1F5F9] hover:bg-[#3B82f6] text-[#94A3B8] hover:text-white font-semibold cursor-pointer leading-5 rounded-lg transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+                    &hellip;
+                </a>
+            {% endif %}
+
+            {% for i in data.paginator.page_range %}
+                {% if data.number == i %}
+                    <a class="relative inline-flex items-center px-4 py-2 text-sm bg-[#F1F5F9] hover:bg-[#3B82f6] text-[#94A3B8] hover:text-white font-semibold cursor-pointer leading-5 rounded-lg transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+                        {{ i }}
+                    </a>
+                {% elif i > data.number|add:'-5' and i < data.number|add:'5' %}
+                    <a href="?page={{ i }}&limit={{ limit }}{{ params }}"
+                        class="relative inline-flex items-center px-4 py-2 text-sm font-semibold bg-[#EFF6FF] hover:bg-[#3B82F6] text-[#3B82F6] hover:text-white cursor-pointer leading-5 rounded-lg transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+                        {{ i }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            {% if data.paginator.num_pages > data.number|add:'4' %}
+                <a class="relative inline-flex items-center px-4 py-2 text-sm bg-[#F1F5F9] hover:bg-[#3B82f6] text-[#94A3B8] hover:text-white font-semibold cursor-pointer leading-5 rounded-lg transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+                    &hellip;
+                </a>
+            {% endif %}
+
+            {% if data.has_next %}
+                <a href="?page={{ data.next_page_number }}&limit={{ limit }}{{ params }}"
+                    class="relative inline-flex items-center px-4 py-2 text-sm bg-[#EFF6FF] hover:bg-[#3B82F6] text-[#3B82F6] hover:text-white font-semibold cursor-pointer leading-5 rounded-lg transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+                    Selanjutnya
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+</div>
+
+<script>
+    document.getElementById('limit').addEventListener('change', function() {
+        var newLimit = this.value;
+        var newUrl = updateQueryStringParameter(window.location.href, 'limit', newLimit);
+        // Remove 'page' parameter when limit changes to reset to page 1
+        newUrl = removeQueryStringParameter(newUrl, 'page');
+        window.location.href = newUrl;
+    });
+
+    function updateQueryStringParameter(uri, key, value) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        }
+        else {
+            return uri + separator + key + "=" + value;
+        }
+    }
+
+    function removeQueryStringParameter(uri, key) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        if (uri.match(re)) {
+            return uri.replace(re, '$1').replace(/&$/, '');
+        }
+        else {
+            return uri;
+        }
+    }
+
+</script>

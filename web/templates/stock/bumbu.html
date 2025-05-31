@@ -1,0 +1,297 @@
+{% extends "partials/base.html" %}
+{% load general_function %}
+{% block title %}
+Stock Bumbu
+{% endblock %}
+
+{% block content %}
+<div class="py-5">
+    <div class="container">
+        <div class="flex justify-between">
+            <h1 class="font-bold">Stock Barang dan Bumbu</h1>
+
+            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" id="openDialog">
+                Tambah
+            </button>
+        </div>
+
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                        <th scope="col" rowspan="3" class="border-b px-6 py-3">
+                            No
+                        </th>
+                        <th scope="col" rowspan="3" class="border-b px-6 py-3">
+                            Hari/Tanggal
+                        </th>
+                        <th scope="col" align="center" colspan="18" class="border-b px-6 py-3">
+                            Jenis Barang
+                        </th>
+                        <th scope="col" rowspan="3" class="border-b px-6 py-3">
+                            Keterangan
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" align="center" colspan="3" class="border-b px-6 py-3">
+                            MAMAKU
+                        </th>
+                        <th scope="col" align="center" colspan="3" class="border-b px-6 py-3">
+                            BALADO
+                        </th>
+                        <th scope="col" align="center" colspan="3" class="border-b px-6 py-3">
+                            AIDA
+                        </th>
+                        <th scope="col" align="center" colspan="3" class="border-b px-6 py-3">
+                            MINYAK GORENG
+                        </th>
+                        <th scope="col" align="center" colspan="3" class="border-b px-6 py-3">
+                            PLASTIK 1/4
+                        </th>
+                        <th scope="col" align="center" colspan="3" class="border-b px-6 py-3">
+                            KRESEK/PANDU
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="border-b px-6 py-3">
+                            M
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            K
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            S
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            M
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            K
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            S
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            M
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            K
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            S
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            M
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            K
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            S
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            M
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            K
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            S
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            M
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            K
+                        </th>
+                        <th scope="col" class="border-b px-6 py-3">
+                            S
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for x in object_list %}
+                        <tr class="border-b">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                                {{ forloop.counter }}
+                            </th>
+                            <td class="px-6 py-4">
+                                {{ x.date|convert_date }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.mamaku_masuk }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.mamaku_keluar }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.mamaku_stock }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.balado_masuk }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.balado_keluar }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.balado_stock }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.aida_masuk }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.aida_keluar }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.aida_stock }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.minyak_masuk }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.minyak_keluar }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.minyak_stock }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.plastik_masuk }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.plastik_keluar }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.plastik_stock }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.kresek_masuk }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.kresek_keluar }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.kresek_stock }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ x.keterangan }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <dialog id="bumbuDialog" class="modal">
+            <div class="bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Tambah Stock Barang Bumbu</h2>
+                    <button id="closeDialog" class="text-gray-600 hover:text-gray-900 focus:outline-none">&times;</button>
+                </div>
+        
+                <form method="post" action="{% url 'add_stock_barang_bumbu' %}" id="bumbuForm">
+                    {% csrf_token %}
+                    
+                    <div class="mb-4">
+                        <label for="tanggal" class="block text-sm font-medium text-gray-700">Tanggal :</label>
+                        <input type="date" id="tanggal" name="tanggal" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="mamaku_masuk" class="block text-sm font-medium text-gray-700">Mamaku Masuk:</label>
+                        <input type="number" id="mamaku_masuk" name="mamaku_masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="mamaku_keluar" class="block text-sm font-medium text-gray-700">Mamaku Keluar:</label>
+                        <input type="number" id="mamaku_keluar" name="mamaku_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="balado_masuk" class="block text-sm font-medium text-gray-700">Balado Masuk:</label>
+                        <input type="number" id="balado_masuk" name="balado_masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="balado_keluar" class="block text-sm font-medium text-gray-700">Balado Keluar:</label>
+                        <input type="number" id="balado_keluar" name="balado_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="aida_masuk" class="block text-sm font-medium text-gray-700">Aida Masuk:</label>
+                        <input type="number" id="aida_masuk" name="aida_masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="aida_keluar" class="block text-sm font-medium text-gray-700">Aida Keluar:</label>
+                        <input type="number" id="aida_keluar" name="aida_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="minyak_masuk" class="block text-sm font-medium text-gray-700">Minyak Masuk:</label>
+                        <input type="number" id="minyak_masuk" name="minyak_masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="minyak_keluar" class="block text-sm font-medium text-gray-700">Minyak Keluar:</label>
+                        <input type="number" id="minyak_keluar" name="minyak_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="plastik_masuk" class="block text-sm font-medium text-gray-700">Plastik Masuk:</label>
+                        <input type="number" id="plastik_masuk" name="plastik_masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="plastik_keluar" class="block text-sm font-medium text-gray-700">Plastik Keluar:</label>
+                        <input type="number" id="plastik_keluar" name="plastik_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="kresek_masuk" class="block text-sm font-medium text-gray-700">Kresek Masuk:</label>
+                        <input type="number" id="kresek_masuk" name="kresek_masuk" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="kresek_keluar" class="block text-sm font-medium text-gray-700">Kresek Keluar:</label>
+                        <input type="number" id="kresek_keluar" name="kresek_keluar" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;">
+                    </div>
+        
+                    <div class="mb-4">
+                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan:</label>
+                        <textarea id="keterangan" name="keterangan" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200" style="min-width: 400px;"></textarea>
+                    </div>
+        
+                    <menu class="flex justify-end">
+                        <button type="submit" class="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800">Kirim</button>
+                        <button type="button" id="cancelDialog" class="ml-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400">Batal</button>
+                    </menu>
+                </form>
+            </div>
+        </dialog>
+        
+
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    const dialog = document.getElementById("bumbuDialog");
+    const openButton = document.getElementById("openDialog");
+    const closeButton = document.getElementById("closeDialog");
+
+    // Open the dialog
+    openButton.onclick = function() {
+        dialog.showModal();
+    }
+
+    // Close the dialog
+    closeButton.onclick = function() {
+        dialog.close();
+    }
+
+    
+</script>
+{% endblock javascripts %}

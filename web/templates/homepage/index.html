@@ -1,0 +1,56 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="{% static './binus.png' %}" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>BINUS School Simprug | BINUS SCHOOL</title>
+</head>
+<body class="bg-gray-100">
+
+    <!-- Header Section -->
+    <div class="bg-gray-900 text-white">
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+            <div>
+                <span class="text-sm">People Innovation Excellence</span>
+            </div>
+            <div class="flex space-x-4">
+                <a href="http://binus.edu" class="text-sm hover:underline">BINA NUSANTARA</a>
+                <a href="#" class="text-sm hover:underline">BINUS SCHOOL</a>
+                <span class="text-sm">BINUS School Simprug</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logo and Navigation -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-6 flex items-center justify-between">
+            <img src="{% static './binus.png' %}" alt="BINUS School Simprug" class="h-16">
+            <nav class="flex space-x-4">
+                <a href="#" class="text-gray-700 hover:text-gray-900">Profil</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900">Visi dan Misi</a>
+                <a href="#" class="text-gray-700 hover:text-gray-900">Sejarah</a>
+                <a href="/login" class="text-gray-700 hover:text-gray-900">Masuk</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Slideshow Section -->
+    <section class="bg-gray-200 ">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <img src="https://simprug.binus.sch.id/id/wp-content/uploads/sites/2/2019/02/simprug-wb.png" 
+            alt="Slide Image" class="w-full h-full object-cover">
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">&copy; 2024 BINUS School Simprug</p>
+        </div>
+    </footer>
+
+</body>
+</html>

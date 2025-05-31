@@ -1,0 +1,297 @@
+{% extends "partials/base.html" %} {% load general_function %} {% block title %}
+Pembayaran {% endblock %} {% block content %}
+
+<div class="grid gap-6">
+  <div class="flex items-center justify-between"></div>
+  {% if request.session.roles == "ORTU" %}
+  <button
+    onclick="modal_tambah_transaksi.showModal()"
+    class="text-white bg-green-500 hover:bg-green-600 rounded-lg px-4 py-2"
+  >
+    Tambah Pembayaran
+  </button>
+  {% endif %}
+
+  <dialog
+    id="modal_tambah_transaksi"
+    class="modal-middle relative p-4 w-full max-w-2xl bg-white rounded-lg shadow"
+  >
+    <div class="relative">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between p-4 border-b">
+        <h3 class="text-xl font-semibold">Tambah Pembayaran</h3>
+        <button
+          type="button"
+          onclick="modal_tambah_transaksi.close()"
+          class="text-gray-400 hover:text-gray-900 rounded-lg w-8 h-8"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        action="{% url 'pembayaran' %}"
+        id="form_tambah_transaksi"
+      >
+        {% csrf_token %}
+        <div class="p-4 space-y-4">
+          <!-- Pilih Murid -->
+          <div>
+            <label for="murid_id" class="block text-sm font-medium"
+              >Murid:</label
+            >
+            <select
+              id="murid_id"
+              name="murid_id"
+              required
+              class="w-full border rounded-lg p-2"
+            >
+              <option value="" hidden>Pilih Murid</option>
+              {% for murid in murid_list %}
+              <option value="{{ murid.murid_id }}">{{ murid.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <!-- Input Jumlah Pembayaran -->
+          <div>
+            <label for="jumlah" class="block text-sm font-medium"
+              >Jumlah Pembayaran:</label
+            >
+            <input
+              type="number"
+              disabled
+              id="jumlah"
+              name="jumlah"
+              required
+              class="w-full border rounded-lg p-2"
+              placeholder="Masukkan jumlah"
+            />
+          </div>
+
+          <!-- Input Keterangan -->
+          <div>
+            <label for="keterangan" class="block text-sm font-medium"
+              >Keterangan:</label
+            >
+            <select
+              id="keterangan"
+              onchange="changeJumlah(this)"
+              name="keterangan"
+              required
+              class="w-full border rounded-lg p-2"
+            >
+              <option value="" hidden>Pilih Keterangan Pembayaran</option>
+              <option value="Registrasi">Registrasi</option>
+              <option value="Pembayaran ke 1">Pembayaran ke 1</option>
+              <option value="Pembayaran ke 2">Pembayaran ke 2</option>
+              <option value="Pembayaran ke 3">Pembayaran ke 3</option>
+              <option value="Pembayaran ke 4">Pembayaran ke 4</option>
+              <option value="Pembayaran Terakhir">Pembayaran Terakhir</option>
+            </select>
+          </div>
+
+          <!-- Upload Bukti Pembayaran -->
+          <div>
+            <label for="bukti_pembayaran" class="block text-sm font-medium"
+              >Bukti Pembayaran:</label
+            >
+            <input
+              type="file"
+              id="bukti_pembayaran"
+              name="bukti_pembayaran"
+              accept="image/*"
+              required
+              class="w-full border rounded-lg p-2"
+            />
+          </div>
+        </div>
+      </form>
+
+      <!-- Modal Footer -->
+      <div class="flex justify-end p-4 border-t">
+        <button
+          type="button"
+          onclick="modal_tambah_transaksi.close()"
+          class="text-gray-500 bg-white hover:bg-gray-100 rounded-lg px-5 py-2.5"
+        >
+          Batal
+        </button>
+        <button
+          type="submit"
+          form="form_tambah_transaksi"
+          class="ml-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg px-5 py-2.5"
+        >
+          Simpan
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <div class="grid gap-4 p-[18px] border-2 border-[#E2E8F0] rounded-lg">
+    <div class="flex justify-between">
+      <h1 class="text-base font-semibold border-l-4 pl-2.5 border-primaryColor">
+        Daftar Nilai Siswa
+      </h1>
+      <form class="w-full" method="GET">
+        <label
+          for="default-search"
+          class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          >Pencarian</label
+        >
+        <div class="relative">
+          <div
+            class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"
+          >
+            <svg
+              class="w-4 h-4 text-gray-500 dark:text-gray-400"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 20"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+              />
+            </svg>
+          </div>
+          <input
+            type="search"
+            name="search"
+            id="search_duk"
+            class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Cari Pengajuan..."
+            required
+          />
+          <button
+            type="submit"
+            class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            Pencarian
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="overflow-x-auto rounded-lg shadow-md">
+      <table class="table-auto w-full border-collapse">
+        <!-- Header -->
+        <thead class="bg-[#F1F5F9] sticky top-0">
+          <tr>
+            <th
+              class="p-3 text-sm font-medium text-gray-700 border text-center"
+            >
+              No
+            </th>
+            <th class="p-3 text-sm font-medium text-gray-700 border">
+              Nama Murid
+            </th>
+            <th
+              class="p-3 text-sm font-medium text-gray-700 border text-center"
+            >
+              Jumlah
+            </th>
+            <th class="p-3 text-sm font-medium text-gray-700 border">
+              Keterangan
+            </th>
+            <th
+              class="p-3 text-sm font-medium text-gray-700 border text-center"
+            >
+              Status
+            </th>
+            <th class="p-3 text-sm font-medium text-gray-700 border">
+              Bukti Pembayaran
+            </th>
+            <th class="p-3 text-sm font-medium text-gray-700 border">
+              Tanggal
+            </th>
+          </tr>
+        </thead>
+        <!-- Body -->
+        <tbody>
+          {% if data %} {% for x in data %}
+          <tr class="{% cycle 'bg-white' 'bg-gray-50' %}">
+            <td class="p-3 text-sm text-gray-600 border text-center">
+              {{ forloop.counter }}
+            </td>
+            <td class="p-3 text-sm text-gray-600 border">{{ x.murid.name }}</td>
+            <td class="p-3 text-sm text-gray-600 border text-center">
+              Rp {{ x.jumlah|format_angka }}
+            </td>
+            <td class="p-3 text-sm text-gray-600 border">
+              {{ x.keterangan|default:'-' }}
+            </td>
+            <td class="p-3 text-sm text-gray-600 border text-center">
+              {% if x.status %}
+              <span class="text-green-500 font-medium">Lunas</span>
+              {% else %}
+              <span class="text-red-500 font-medium">Belum Lunas</span>
+              {% endif %}
+            </td>
+            <td class="p-3 text-sm text-gray-600 border text-center">
+              {% if x.bukti_pembayaran %}
+              <a
+                href="{{ x.bukti_pembayaran.url }}"
+                style="text-decoration: underline; color: blue"
+                target="_blank"
+              >
+                Lihat
+              </a>
+              {% else %}
+              <span class="text-gray-400 italic">Tidak ada</span>
+              {% endif %}
+            </td>
+            <td class="p-3 text-sm text-gray-600 border">
+              {{ x.created|date:"d M Y" }}
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td
+              class="p-3 text-sm text-gray-600 border text-center"
+              colspan="7"
+            >
+              Tidak ada data
+            </td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+    {% include 'partials/pagination.html' %}
+  </div>
+</div>
+
+{% endblock %} {% block javascripts %}
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  document.getElementById("search_duk").value = urlParams.get("search");
+
+  function changeJumlah(val) {
+    let biaya = 0;
+    let pilih = val.value;
+    if (pilih == "Registrasi") {
+      document.getElementById("jumlah").value = 1500000;
+    } else if (pilih == "Pembayaran ke 1") {
+      document.getElementById("jumlah").value = 100000;
+    } else if (pilih == "Pembayaran ke 2") {
+      document.getElementById("jumlah").value = 200000;
+    } else if (pilih == "Pembayaran ke 3") {
+      document.getElementById("jumlah").value = 2000000;
+    } else if (pilih == "Pembayaran ke 4") {
+      document.getElementById("jumlah").value = 2000000;
+    } else if (pilih == "Pembayaran Terakhir") {
+      document.getElementById("jumlah").value = 3000000;
+    } else {
+      document.getElementById("jumlah").value = 0;
+    }
+    console.log(val.value);
+  }
+</script>
+{% endblock javascripts %}

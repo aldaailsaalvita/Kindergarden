@@ -1,0 +1,197 @@
+{% extends "partials/base.html" %}
+{% load general_function %}
+{% block title %}
+Nilai Akademik Siswa
+{% endblock %}
+
+{% block content %}
+
+<div class="grid gap-6">
+    <div class="flex items-center justify-between">
+
+    </div>
+    {% if request.session.roles == "GURU" %}
+        <button onclick="modal_tambah_nilai.showModal()" class="text-white bg-green-500 hover:bg-green-600 rounded-lg px-4 py-2">
+            Tambah Nilai
+        </button>
+    {% endif %}
+
+    <dialog id="modal_tambah_nilai" class="modal-middle relative p-4 w-full max-w-2xl max-h-full bg-white rounded-lg shadow">
+        <div class="relative">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                <h3 class="text-xl font-semibold text-gray-900">Tambah Nilai</h3>
+                <button type="button" onclick="modal_tambah_nilai.close()" class="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg w-8 h-8 inline-flex justify-center items-center">
+                    <svg class="w-3 h-3" fill="none" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M1 1l12 12M13 1L1 13"/>
+                    </svg>
+                </button>
+            </div>
+    
+            <!-- Modal body -->
+            <form method="post" action="" id="form_tambah_nilai">
+                {% csrf_token %}
+                <div class="p-4 md:p-5 space-y-4">
+                    <!-- Pilih Murid -->
+                    <div>
+                        <label for="murid_id" class="block text-sm font-medium text-gray-700">Murid:</label>
+                        <select id="murid_id" name="murid_id" required class="w-full border rounded-lg p-2">
+                            <option value="" hidden>Pilih Murid</option>
+                            {% for murid in murid_list %}
+                                <option value="{{ murid.murid_id }}">{{ murid.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Pilih Mata Pelajaran -->
+                    <div>
+                        <label for="mapel_id" class="block text-sm font-medium text-gray-700">Mata Pelajaran:</label>
+                        <select id="mapel_id" name="mapel_id" required class="w-full border rounded-lg p-2">
+                            <option value="" hidden>Pilih Mata Pelajaran</option>
+                            {% for mapel in mapel_list %}
+                                <option value="{{ mapel.mapel_id }}">{{ mapel.nama }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Input Nilai -->
+                    <div>
+                        <label for="nilai" class="block text-sm font-medium text-gray-700">Nilai:</label>
+                        <input type="number" id="nilai" name="nilai" min="0" max="100" required class="w-full border rounded-lg p-2" placeholder="Masukkan nilai">
+                    </div>
+                </div>
+            </form>
+    
+            <!-- Modal footer -->
+            <div class="flex justify-end items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                <button type="button" onclick="modal_tambah_nilai.close()" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 rounded-lg text-sm px-5 py-2.5">
+                    Batal
+                </button>
+                <button form="form_tambah_nilai" type="submit" class="ms-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 rounded-lg text-sm px-5 py-2.5">
+                    Simpan
+                </button>
+            </div>
+        </div>
+    </dialog>
+    
+
+    <div class="grid gap-4 p-[18px] border-2 border-[#E2E8F0] rounded-lg">
+        <div class="flex justify-between">
+            <h1 class="text-base font-semibold border-l-4 pl-2.5 border-primaryColor">
+                Daftar Nilai Siswa
+            </h1>
+            <form class="w-full" method="GET">   
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Pencarian</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="search" name="search" id="search_duk" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Cari Pengajuan..." required />
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Pencarian</button>
+                </div>
+            </form>
+        </div>
+        <table class="table-auto w-full">
+            <thead class="text-left">
+                <tr class="bg-[#F1F5F9]">
+                    <th class="p-3 text-base font-medium border" align="center">No</th>
+                    <th class="p-3 text-base font-medium border">Nama</th>
+                    <th class="p-3 text-base font-medium border" align="left">Guru</th>
+                    <th class="p-3 text-base font-medium border" align="left">Mapel</th>
+                    <th class="p-3 text-base font-medium border" align="center">Nilai</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if data %}
+                    {% for x in data %}
+                        <tr>
+                            <td class="p-3 text-sm font-normal border" align="center">{{forloop.counter}}</td>
+                            <td class="p-3 text-sm font-normal border">{{x.murid.name}}</td>
+                            <td class="p-3 text-sm font-normal border">{{x.guru.name}}</td>
+                            <td class="p-3 text-sm font-normal border" align="left">{{x.mapel.nama}}</td>
+                            <td class="p-3 text-sm font-normal border" align="center">{{x.nilai}}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                        <tr>
+                            <td class="p-3 text-sm font-normal border" align="center" colspan="4">Tidak ada data</td>
+                        </tr>
+                {% endif %}
+            </tbody>
+        </table>
+        {% include 'partials/pagination.html' %}
+    </div>
+
+</div>
+
+{% endblock %}
+{% block javascripts %}
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('search_duk').value = urlParams.get('search')
+    var polda = document.getElementById('polda').value
+    var satker = document.getElementById('satker').value
+    
+    function poldaChange(select) {
+        var polda = document.getElementById('polda').value
+        getSatker(polda)
+    }
+
+    function satkerChange(select) {
+        var satker = document.getElementById('satker').value
+        console.log("satker", satker)
+    }
+
+    function confirmButton() {
+        data = {
+            'judul_kegiatan' : document.getElementById("judul_kegiatan").value,
+            'judul_kegiatan_eng' : document.getElementById("judul_kegiatan_eng").value,
+            'durasi_pelaksanaan' : document.getElementById("durasi_pelaksanaan").value,
+            'polda' : document.getElementById("polda").value,
+            'satker' : document.getElementById("satker").value,
+            'tahun_ksa' : document.getElementById("tahun_ksa").value,
+        }
+        console.log(data)
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: data,
+            beforeSend: function(){
+                $('#confirm_create_duk').html(`<i class="fa fa-spin fa-spinner"></i> Loading...</b>`)
+                $('#confirm_create_duk').attr('disabled')
+            },
+            success: function (response) {
+                console.log(response)
+                if(response.status == 201){
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: response.message,
+                        icon: "success",
+                        confirmButton: false,
+                        showConfirmButton: false,
+                    });
+                    window.location.reload()
+                }else{
+                    Swal.fire({
+                        title: "Gagal!",
+                        text: response.message,
+                        icon: "error",
+                        confirmButton: false,
+                        showConfirmButton: false,
+                    });
+                }
+                $('#confirm_create_duk').html(`Setuju`)
+                $('#confirm_create_duk').removeAttr('disabled')
+                document.getElementById('modal_add_duk').close()
+            },
+            error: function (err) {
+                iziToast.error({
+                    title: 'Error',
+                    message: err,
+                    position: 'topRight',
+                });
+            }
+        });
+    }
+</script>
+{% endblock javascripts %}

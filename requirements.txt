@@ -1,0 +1,13 @@
+Django==3.2.15
+gunicorn==19.6.0
+djangorestframework==3.11.2
+django-rest-auth
+django-cors-headers
+django-allauth
+python-dotenv
+whitenoise
+django_resized
+Pillow
+django-import-export
+requests
+libsqlite3-dev
