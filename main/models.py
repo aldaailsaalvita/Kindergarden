@@ -114,7 +114,7 @@ class MataPelajaran(models.Model):
         return self.nama
 
 class Nilai(models.Model):
-    berita_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nilai_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     guru = models.ForeignKey(AbstractUser, on_delete=models.DO_NOTHING)
     murid = models.ForeignKey(Murid, on_delete=models.DO_NOTHING)
     mapel = models.ForeignKey(MataPelajaran, on_delete=models.DO_NOTHING)
