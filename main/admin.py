@@ -16,32 +16,32 @@ class MuridAdmin(admin.ModelAdmin):
     ordering = ('-created',)
 
 # ModelAdmin untuk Transaksi Pembayaran
-class TransaksiPembayaranAdmin(admin.ModelAdmin):
-    list_display = ('transaksi_id', 'murid', 'keterangan', 'jumlah', 'status', 'created', 'updated')
-    list_filter = ('status', 'murid')
-    search_fields = ('transaksi_id', 'murid__name')
-    ordering = ('-created',)
+# class TransaksiPembayaranAdmin(admin.ModelAdmin):
+#     list_display = ('transaksi_id', 'murid', 'keterangan', 'jumlah', 'status', 'created', 'updated')
+#     list_filter = ('status', 'murid')
+#     search_fields = ('transaksi_id', 'murid__name')
+#     ordering = ('-created',)
 
 # ModelAdmin untuk Forum Diskusi
-class ForumDiskusiAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'status', 'created', 'updated')
-    list_filter = ('status', 'author')
-    search_fields = ('title', 'author__name')
-    ordering = ('-created',)
+# class ForumDiskusiAdmin(admin.ModelAdmin):
+#     list_display = ('title', 'author', 'status', 'created', 'updated')
+#     list_filter = ('status', 'author')
+#     search_fields = ('title', 'author__name')
+#     ordering = ('-created',)
 
 # ModelAdmin untuk Komentar
-class KomentarAdmin(admin.ModelAdmin):
-    list_display = ('komentar_id', 'author', 'komentar', 'created', 'updated')
-    list_filter = ('author',)
-    search_fields = ('komentar', 'author__name')
-    ordering = ('-created',)
+# class KomentarAdmin(admin.ModelAdmin):
+#     list_display = ('komentar_id', 'author', 'komentar', 'created', 'updated')
+#     list_filter = ('author',)
+#     search_fields = ('komentar', 'author__name')
+#     ordering = ('-created',)
 
 # ModelAdmin untuk Berita
-class BeritaAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'jenis', 'created', 'updated')
-    list_filter = ('jenis', 'author')
-    search_fields = ('title', 'author__name', 'content')
-    ordering = ('-created',)
+# class BeritaAdmin(admin.ModelAdmin):
+#     list_display = ('title', 'author', 'jenis', 'created', 'updated')
+#     list_filter = ('jenis', 'author')
+#     search_fields = ('title', 'author__name', 'content')
+#     ordering = ('-created',)
 
 # ModelAdmin untuk Mata Pelajaran
 class MataPelajaranAdmin(admin.ModelAdmin):
@@ -59,9 +59,9 @@ class NilaiAdmin(admin.ModelAdmin):
 # Mendaftarkan model ke admin
 admin.site.register(AbstractUser, AbstractUserAdmin)
 admin.site.register(Murid, MuridAdmin)
-admin.site.register(TransaksiPembayaran, TransaksiPembayaranAdmin)
-admin.site.register(ForumDiskusi, ForumDiskusiAdmin)
-admin.site.register(Komentar, KomentarAdmin)
-admin.site.register(Berita, BeritaAdmin)
+# admin.site.register(TransaksiPembayaran, TransaksiPembayaranAdmin)
+# admin.site.register(ForumDiskusi, ForumDiskusiAdmin)
+# admin.site.register(Komentar, KomentarAdmin)
+# admin.site.register(Berita, BeritaAdmin)
 admin.site.register(MataPelajaran, MataPelajaranAdmin)
 admin.site.register(Nilai, NilaiAdmin)

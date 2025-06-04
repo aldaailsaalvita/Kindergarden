@@ -130,7 +130,7 @@ def anak(request):
         tanggal_lahir = request.POST.get('tanggal_lahir')
         kelas = request.POST.get('kelas')
         foto = request.FILES.get('foto')  
-        status = request.POST.get('status') == 'on'  
+        # status = request.POST.get('status') == 'on'  
         ortu_id = request.session.get('user_id')  
         ortu = AbstractUser.objects.get(id=ortu_id)
         try:
@@ -140,7 +140,7 @@ def anak(request):
                 tanggal_lahir=tanggal_lahir,
                 kelas=kelas,
                 foto=foto,
-                status=status,
+                status=True,
                 ortu=ortu
             )
             messages.success(request, 'Murid berhasil ditambahkan.')
